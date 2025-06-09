@@ -1,0 +1,23 @@
+services:
+   twilio-server:
+      container_name: twilio-server
+      build:
+         context: .
+         dockerfile: Dockerfile
+      ports:
+         - "3001:3001"
+      environment:
+         - TWILIO_ACCOUNT_SID=${TWILIO_ACCOUNT_SID}
+         - TWILIO_API_KEY=${TWILIO_API_KEY}
+         - TWILIO_API_SECRET=${TWILIO_API_SECRET}
+         - TWIML_APP_SID=${TWIML_APP_SID}
+      volumes:
+         - ./server:/app
+         - /server/node_modules
+      restart: unless-stopped
+      networks:
+         - test-network
+
+networks:
+   test-network:
+      driver: bridge
