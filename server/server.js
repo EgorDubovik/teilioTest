@@ -13,6 +13,7 @@ app.use(cors());
 
 const { AccessToken } = twilio.jwt;
 const VoiceGrant = AccessToken.VoiceGrant;
+const VoiceResponse = twilio.twiml.VoiceResponse;
 
 app.get("/token", (req, res) => {
    const identity = req.query.identity || "user";
@@ -52,7 +53,7 @@ app.post("/voice", (req, res) => {
    res.send(twiml.toString());
 });
 
-app.post("/voice-inbound", (req, res) => {
+app.get("/voice-inbound", (req, res) => {
    console.log("INBOUND:", req.body);
    const twiml = new VoiceResponse();
 
