@@ -13,7 +13,7 @@ services:
          - TWIML_APP_SID=${TWIML_APP_SID}
       volumes:
          - ./server:/app
-         - /server/node_modules
+         - /app/node_modules
       restart: unless-stopped
       networks:
          - test-network
@@ -31,6 +31,8 @@ services:
       deploy:
          replicas: ${NGINX_ENABLED:-1}
       restart: unless-stopped
+      depends_on:
+         - twilio-server
       networks:
          - test-network
 
@@ -42,6 +44,8 @@ services:
          - ./certbot/www:/var/www/certbot
       depends_on:
          - nginx
+      deploy:
+         replicas: ${CERTBOT_ENABLED:-1}
       networks:
          - test-network
 
