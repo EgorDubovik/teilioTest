@@ -10,6 +10,8 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 const { AccessToken } = twilio.jwt;
 const VoiceGrant = AccessToken.VoiceGrant;
@@ -57,6 +59,7 @@ app.post("/voice-inbound", (req, res) => {
    console.log("INBOUND:", req.body);
    const twiml = new VoiceResponse();
 
+   // twiml.dial().client('dispatcher');
    twiml.say("Hello, this is a test call");
    res.type("text/xml");
    res.send(twiml.toString());
