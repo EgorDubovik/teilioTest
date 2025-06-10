@@ -53,7 +53,7 @@ app.post("/voice", (req, res) => {
    res.send(twiml.toString());
 });
 
-app.get("/voice-inbound", (req, res) => {
+app.post("/voice-inbound", (req, res) => {
    console.log("INBOUND:", req.body);
    const twiml = new VoiceResponse();
 
