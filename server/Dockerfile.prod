@@ -1,0 +1,20 @@
+# Dockerfile
+FROM node:18
+
+# Установим рабочую директорию
+WORKDIR /app
+
+# Копируем package.json и package-lock.json
+COPY server/package*.json ./
+
+# Устанавливаем зависимости
+RUN npm install
+
+# Копируем исходный код
+COPY server .
+
+# Открываем порт
+EXPOSE 3001
+
+# Запускаем сервер
+CMD ["npm", "run", "start"]

@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 
 const { AccessToken } = twilio.jwt;
-const { VoiceGrant } = twilio.jwt;
+const VoiceGrant = AccessToken.VoiceGrant;
 
 app.get("/token", (req, res) => {
    const identity = req.query.identity || "user";
@@ -28,10 +28,37 @@ app.get("/token", (req, res) => {
       process.env.TWILIO_API_SECRET,
       { identity }
    );
-
    token.addGrant(voiceGrant);
-
    res.json({ token: token.toJwt() });
+});
+
+app.post("/voice", (req, res) => {
+   console.log("OUTBOUND:", req.body);
+   const to = req.body.To;
+   const from = req.body.From; // ← номер, с которого хотим звонить (один из купленных в Twilio)
+
+   const twiml = new VoiceResponse();
+
+   if (!from) {
+      return res.status(400).json({ error: "Missing From parameter" });
+   }
+   const dial = twiml.dial({ callerId: from });
+
+   if (to) {
+      dial.number(to);
+   }
+
+   res.type("text/xml");
+   res.send(twiml.toString());
+});
+
+app.post("/voice-inbound", (req, res) => {
+   console.log("INBOUND:", req.body);
+   const twiml = new VoiceResponse();
+
+   twiml.say("Hello, this is a test call");
+   res.type("text/xml");
+   res.send(twiml.toString());
 });
 
 app.get("/status", (req, res) => {

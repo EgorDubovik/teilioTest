@@ -3,7 +3,7 @@ services:
       container_name: twilio-server
       build:
          context: .
-         dockerfile: Dockerfile
+         dockerfile: ${NODEJS_DOCKERFILE}
       ports:
          - "3001:3001"
       environment:
