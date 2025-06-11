@@ -59,8 +59,8 @@ app.post("/voice-inbound", (req, res) => {
    console.log("INBOUND:", req.body);
    const twiml = new VoiceResponse();
 
-   // twiml.dial().client('dispatcher');
-   twiml.say("Hello, this is a test call");
+   twiml.dial().client("egor");
+   // twiml.say("Hello, this is a test call");
    res.type("text/xml");
    res.send(twiml.toString());
 });
